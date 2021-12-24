@@ -21,9 +21,7 @@ The purpose of this project is to learn and improve our SWE and webdev skills, e
 
 ### Features
 
-- Create an API that can be used by various clients and platforms (currentnly focusing on Quizzer clients for discord and browser)
-- Use CSV parsing libraries to parse through CSV files with thousands of lines of data
-- Create normalized database tables for application domain
+- Create an API that can be used by various clients and platforms (Discord and Vue)
 - Implement API features such as API tokens and rate limiting
 - Deploy applications with microservices
 
