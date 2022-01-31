@@ -17,13 +17,38 @@
 
 ## About
 
-The purpose of this project is to learn and improve our SWE and webdev skills, especially with the MEVN stack
+- Practice project for learning and getting experience with fullstack webdevelopment
 
-### Features
+### Core Feature
 
-- Create an API that can be used by various clients and platforms (Discord and Vue)
-- Implement API features such as API tokens and rate limiting
-- Deploy applications with microservices
+- "Quiz" management (creation, deletion, updating, viewing)
+
+### Planned Features
+
+- Different Quiz types:
+  - True/false
+  - Multiple-choice
+  - Short Answer
+- Quiz stats
+  - User score average 
+  - Amount of times attempted
+  - Amount of likes/dislikes
+- User profiles
+  - Quiz stats
+    - Quizzes attempted
+    - Date/Time of those attempts
+    - Quiz scores of those attempts
+  - Favorite quizzes
+  - Preferred quiz subjects
+  - Created Quizzes
+  - Username
+- Quiz gallery
+  - All public quizzes sorted by likes
+  - Sort by:
+    - date created
+    - title
+  - Filter by:
+    - subjects
 
 ### Built using
 
