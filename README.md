@@ -1,4 +1,4 @@
-<h1 align="center">Quizzer MEVN APP</h1>
+<h1 align="center">Quizzer API</h1>
 <h3 align="center">
     <a href="">Join</a> · 
     <a href="#">Notes</a> 
@@ -8,7 +8,8 @@
 
 - [Table of Contents](#table-of-contents)
 - [About](#about)
-  - [Features](#features)
+  - [Core Feature](#core-feature)
+  - [Planned Features](#planned-features)
   - [Built using](#built-using)
 - [Getting Started](#getting-started)
   - [Prequisites](#prequisites)
@@ -54,8 +55,8 @@
 
 - Mongodb
 - Express
-- Vue
 - Node.js
+- Docker
 
 ## Getting Started
 
