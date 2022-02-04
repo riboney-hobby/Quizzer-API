@@ -1,6 +1,6 @@
 const server = require('./app')
-const database = require('./database')
-const configs = require('./configs')
+const database = require('./database/mongoConnection')
+const configs = require('./shared/configs')
 
 // const server = http.createServer(app)
 
@@ -14,7 +14,7 @@ const startApp = async () => {
     try {
         const connections = await Promise.all([
             server.connect(configs.PORT, configs.HOSTNAME),
-            database.connect()
+            database.connect(configs.MONGO_URI)
         ])
 
         httpServer = connections[0]

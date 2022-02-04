@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
-const configs = require('./configs')
 
-const connect = () => {
+const connect = (URI) => {
     console.log('Establishing connection to MongoDB database...')
-    return mongoose.connect(configs.MONGO_URI)
+    return mongoose.connect(URI)
 }
 
 const disconnect = () => {
