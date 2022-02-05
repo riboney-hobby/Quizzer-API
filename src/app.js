@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 const connect = (port, hostname) => {
 
     const displayInfo = (addressInfo) => {
-        logger.info(`Server is running on ${hostname}`)
+        logger.error(`Server is running on ${hostname}`)
         let connectionInfo
         if(typeof addressInfo === 'object'){
             connectionInfo = `Connection:
