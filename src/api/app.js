@@ -1,7 +1,7 @@
 const express = require('express')
 
 const quizRouter = require('./routers/quiz.router')
-const logger = require('./logger')
+const logger = require('../shared/logger')
 
 const app = express()
 

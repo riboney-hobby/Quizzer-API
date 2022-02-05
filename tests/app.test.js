@@ -1,5 +1,5 @@
 const supertest = require('supertest')
-const server = require('../src/app')
+const server = require('../src/api/app')
 
 const API = supertest(server.app)
 

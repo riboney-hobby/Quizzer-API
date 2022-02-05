@@ -1,7 +1,7 @@
 const path = require('path')
 const winston = require('winston')
 
-const configs = require('./shared/configs')
+const configs = require('./configs')
 
 const { format } = winston
 

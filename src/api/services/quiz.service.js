@@ -1,6 +1,7 @@
-const Quiz = require('../database/quiz.schema')
-const QuizModel = require('../models/Quiz.model')
-const QuestionModel = require('../models/Question.model')
+const Quiz = require('../../database/quiz.schema')
+const QuizModel = require('../../models/Quiz.model')
+const QuestionModel = require('../../models/Question.model')
+const logger = require('../../shared/logger')
 
 // const retrieveAll = async () => {
 //     try{
@@ -23,7 +24,7 @@ const retrieveAll = async () => {
 
         return quizzes.map(q => q.toJSON())
     } catch(err){
-        // console.error(err)
+        logger.error(err)
         throw new Error('Error in quiz.service.retrieveAll:', err.message)
     }
 }
@@ -32,7 +33,7 @@ const retrieveByID = async (id) => {
     try {
         return (await Quiz.findById(id)).toJSON()
     } catch(err){
-        // console.error(err)
+        logger.error(err)
         throw new Error('Error in quiz.service.retrieveById:', err.message)
     }
 }
@@ -47,7 +48,7 @@ const create = async (raw) => {
 
         return savedQuiz.toJSON()
     } catch (err){
-        //console.error(err)
+        logger.error(err)
         throw new Error('Error in quiz.service.create:', err.message)
     }
 }
@@ -56,7 +57,7 @@ const remove = async (id) => {
     try{
         return (await Quiz.findByIdAndRemove(id)).toJSON()
     } catch (err) {
-        // console.error(err)
+        logger.error(err)
         throw new Error('Error in quiz.service.remove:', err.message)
     }
 }
@@ -69,7 +70,7 @@ const update = async (id, raw) => {
 
         return await Quiz.findByIdAndUpdate(id, validatedQuiz.toJSON(), {new: true})
     } catch(err){
-        // console.error(err)
+        logger.error(err)
         throw new Error('Error in quiz.service.update:', err.message)
     }
 }

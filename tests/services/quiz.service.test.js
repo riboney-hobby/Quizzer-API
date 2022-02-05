@@ -1,6 +1,6 @@
 const db = require('../database/localMongoConnection')
 const Quiz = require('../../src/database/quiz.schema')
-const quizService = require('../../src/services/quiz.service')
+const quizService = require('../../src/api/services/quiz.service')
 const QuestionModel = require('../../src/models/Question.model')
 const s = require('../database/seederTest')
 

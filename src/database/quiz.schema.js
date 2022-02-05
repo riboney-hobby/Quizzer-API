@@ -1,15 +1,4 @@
 const mongoose = require('mongoose')
-// const QuizModel = require('../models/Quiz.model')
-// const quizSchema = new mongoose.Schema({
-//     name: String,
-//     question: [{
-//         text: String,
-//         answer: Boolean
-//       }],
-//   })
-// const quizSchema = new mongoose.Schema().loadClass(QuizModel)
-// quizSchema.loadClass(QuizModel)
-
 
 const quizSchema = new mongoose.Schema({
   name: {
@@ -45,3 +34,20 @@ quizSchema.set('toJSON', {
 const Quiz = mongoose.model('Quiz', quizSchema)
 
 module.exports = Quiz
+
+
+
+// Archive:
+// TO-DO: configure schema to load class properly
+// Tried to use .loadClass to hook up Quiz class to the schema, but had errors with path conflicts for the fields
+//
+// const QuizModel = require('../models/Quiz.model')
+// const quizSchema = new mongoose.Schema({
+//     name: String,
+//     question: [{
+//         text: String,
+//         answer: Boolean
+//       }],
+//   })
+// const quizSchema = new mongoose.Schema().loadClass(QuizModel)
+// quizSchema.loadClass(QuizModel)

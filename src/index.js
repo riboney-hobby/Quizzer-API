@@ -1,7 +1,7 @@
 const server = require('./app')
 const database = require('./database/mongoConnection')
 const configs = require('./shared/configs')
-const logger = require('./logger')
+const logger = require('./shared/logger')
 
 // const server = http.createServer(app)
 

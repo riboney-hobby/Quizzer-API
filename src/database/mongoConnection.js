@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const logger = require('../logger')
+const logger = require('../shared/logger')
 
 const connect = (URI) => {
     logger.info('Establishing connection to MongoDB database...')
