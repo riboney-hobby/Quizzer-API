@@ -10,7 +10,7 @@ const { format } = winston
 // src: https://logtail.com/tutorials/how-to-install-setup-and-use-winston-and-morgan-to-log-node-js-applications/
 // more info: https://github.com/winstonjs/logform#understanding-formats
 
-const filepathToLogs = path.join(__dirname, '..', 'logs')
+const filepathToLogs = path.join(__dirname, '..', '..', 'logs')
 
 // https://github.com/winstonjs/winston#filtering-info-objects
 const filter = level => format(info => info.level !== level ? false: info)()
