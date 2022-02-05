@@ -1,5 +1,7 @@
 const express = require('express')
 
+const logger = require('./logger')
+
 const app = express()
 
 app.get('/', (req, res) => {
@@ -10,7 +12,7 @@ app.get('/', (req, res) => {
 const connect = (port, hostname) => {
 
     const displayInfo = (addressInfo) => {
-        console.log(`Server is running on ${hostname}`)
+        logger.info(`Server is running on ${hostname}`)
         let connectionInfo
         if(typeof addressInfo === 'object'){
             connectionInfo = `Connection:
@@ -18,7 +20,7 @@ const connect = (port, hostname) => {
             - Protocol: ${addressInfo.family}
             - Port: ${addressInfo.port}`
 
-            console.log(connectionInfo)
+            logger.info(connectionInfo)
         }
     }
 
@@ -33,7 +35,7 @@ const connect = (port, hostname) => {
 
 const disconnect = (server) => {
     return new Promise((resolve, reject) => server
-        .close(() => console.log('HTTP server closed!'))
+        .close(() => logger.info('HTTP server closed!'))
         .on('close', () => resolve())
         .on('error', () => reject(new Error("HTTP Server doesn't exist!")))
     )
