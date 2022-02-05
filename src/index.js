@@ -1,6 +1,7 @@
 const server = require('./app')
 const database = require('./database/mongoConnection')
 const configs = require('./shared/configs')
+const logger = require('./logger')
 
 // const server = http.createServer(app)
 
@@ -19,8 +20,8 @@ const startApp = async () => {
 
         httpServer = connections[0]
     } catch (err){
-        console.error(`Error in starting application!`)
-        console.error(err)
+        logger.error(`Error in starting application!`)
+        logger.error(err)
         process.exit(1)
     }
 }
@@ -30,7 +31,7 @@ const startApp = async () => {
 
 const shutdownApp = async (httpServer) => {
     try{
-        console.log("Shutting down application!")
+        logger.log("Shutting down application!")
         await Promise.all([
             server.disconnect(httpServer),
             database.disconnect()
@@ -38,8 +39,8 @@ const shutdownApp = async (httpServer) => {
         process.exit(0)
     } catch(err){
         if(err){
-            console.error("Error in closing application gracefully!")
-            console.error(err)
+            logger.error("Error in closing application gracefully!")
+            logger.error(err)
             process.exit(1)
         } 
     }
