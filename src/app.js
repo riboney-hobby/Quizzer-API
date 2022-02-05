@@ -1,10 +1,16 @@
 const express = require('express')
 
+const quizRouter = require('./routers/quiz.router')
+
 const app = express()
+
+app.use(express.json())
 
 app.get('/', (req, res) => {
     res.status(200).send('Hello World!')
 })
+
+app.use('/api/quizzes', quizRouter)
 
 // Promise > callback
 const connect = (port, hostname) => {
