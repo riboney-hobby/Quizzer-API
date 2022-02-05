@@ -2,24 +2,48 @@ const Question = require('../../src/models/Question.model')
 const Quiz = require('../../src/models/Quiz.model')
 const MissingValue = require('../../src/shared/errors/MissingValue.error')
 const Validation = require('../../src/shared/errors/Validation.error')
+const s = require('../database/seederTest')
 
+test('Success: JSON args', () => {
+    const q = new Quiz(s.sampleQuizJSON.name, s.sampleQuizJSON.questions)
 
-test("Valid name and questions don't throw error", () => {
-    const name = 'SampleQuizName'
-    const questions = [
-        new Question('Sample Text #1', false),
-        new Question('Sample Text #2', false),
-        new Question('Sample Text #3', false),
-    ]
-    const quiz = new Quiz(name, questions)
+    expect(q.name).toBe(s.sampleQuizJSON.name)
 
-    let expectedString = `${name} Quiz\n`
-    questions.forEach(q => expectedString.concat(`${q.toString()}\n`))
-
-    expect(quiz.toString()).toBe(expectedString)
+    for(let i = 0; i<s.sampleQuizJSON.length; i++){
+        expect(q.questions[i]).toEqual(s.sampleQuizJSON[i])
+    }
 })
 
-test('Missing name throws error', () => {
+test('Success: JSON Questions', () => {
+    
+    const quizWithJSONQuestions = new Quiz(s.sampleQuizName, s.sampleQuestionsJSON)
+
+    const expectedQuiz = new Quiz(s.sampleQuizName, s.sampleQuestionModels)
+
+    expect(quizWithJSONQuestions).toEqual(expectedQuiz)
+})
+
+test("Success: Quiz toString()", () => {
+    let expectedToString = `${s.sampleQuizName} Quiz\n`
+    s.sampleQuestionModels.forEach(q => expectedToString.concat(`${q.toString()}\n`))
+
+    const quiz = s.sampleQuizModel
+
+    expect(quiz.toString()).toBe(expectedToString)
+})
+
+test('Success: Quiz toJSON()', () => {
+    const quiz = s.sampleQuizModel
+    
+    const expectedJSON = {
+        name: s.sampleQuizName,
+        questions: s.sampleQuestionsJSON
+    }
+
+    expect(quiz.toJSON()).toEqual(expectedJSON)
+})
+
+test('Error: missing name', () => {
     const omitName = () => {
         new Quiz()
     }
@@ -27,7 +51,7 @@ test('Missing name throws error', () => {
     expect(omitName).toThrow(new MissingValue('name'))
 })
 
-test('Name with 0 characters throws error', () => {
+test('Error: empty name', () => {
     const omitName = () => {
         new Quiz('')
     }
@@ -35,7 +59,7 @@ test('Name with 0 characters throws error', () => {
     expect(omitName).toThrow(new MissingValue('name'))
 })
 
-test('Non-alphanumeric name throws error', () => {
+test('Error: non-alphanumeric name', () => {
     const omitName = () => {
         new Quiz('$^#$^$#%')
     }
@@ -44,25 +68,25 @@ test('Non-alphanumeric name throws error', () => {
 })
 
 
-test('Missing questions throws error', () => {
+test('Error: missing questions', () => {
     const invalidQuestions = () => new Quiz('Sample Name')
     
     expect(invalidQuestions).toThrow(new MissingValue('questions'))  
 })
 
-test('Empty questions throws error', () => {
+test('Error: empty questions', () => {
     const invalidQuestions = () => new Quiz('Sample Name', [])
     
     expect(invalidQuestions).toThrow(new MissingValue('questions'))  
 })
 
-test('Invalid questions type throws error', () => {
+test('Error: invalid questions type', () => {
     const invalidQuestions = () => new Quiz('Sample Name', 'questions')
     
     expect(invalidQuestions).toThrow(new Validation('questions'))  
 })
 
-test('Invalid objects in questions throws error', () => {
+test('Error: invalid question objects in questions', () => {
     const questions = [
         new Question('Sample Text #1', false),
         143,
@@ -71,5 +95,5 @@ test('Invalid objects in questions throws error', () => {
 
     const invalidQuestions = () => new Quiz('Sample Name', questions)
     
-    expect(invalidQuestions).toThrow(new Validation('questions'))  
+    expect(invalidQuestions).toThrow(new MissingValue('text'))  
 })

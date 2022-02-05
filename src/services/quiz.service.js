@@ -1,53 +1,76 @@
 const Quiz = require('../database/quiz.schema')
+const QuizModel = require('../models/Quiz.model')
+const QuestionModel = require('../models/Question.model')
+
+// const retrieveAll = async () => {
+//     try{
+//         const quizzes = await Quiz.find({})
+//         // default returns empty array, 
+//         // so we explicitly return null if thats the case
+//         return quizzes.length === 0 ? null : quizzes
+//     } catch(err){
+//         // console.error(err)
+//         throw new Error('Error in quiz.service.retrieveAll:', err.message)
+//     }
+// }
 
 const retrieveAll = async () => {
     try{
         const quizzes = await Quiz.find({})
         // default returns empty array, 
         // so we explicitly return null if thats the case
-        return quizzes.length === 0 ? null : quizzes
+        if(quizzes.length === 0) return null
+
+        return quizzes.map(q => q.toJSON())
     } catch(err){
-        console.error('Error in quiz.service.retrieveAll\n', err)
-        return null
+        // console.error(err)
+        throw new Error('Error in quiz.service.retrieveAll:', err.message)
     }
 }
 
 const retrieveByID = async (id) => {
     try {
-        return await Quiz.findById(id)
+        return (await Quiz.findById(id)).toJSON()
     } catch(err){
-        console.error('Error in quiz.service.retrieveById\n', err)
-        return null
+        // console.error(err)
+        throw new Error('Error in quiz.service.retrieveById:', err.message)
     }
 }
 
 const create = async (raw) => {
     try{
-        const quiz = new Quiz({name:raw.name, questions:raw.questions})
-        // return await quiz.save()
-        const jsonQuiz = await quiz.save()
-        return jsonQuiz.toJSON()
+        const validatedQuiz = new QuizModel(raw.name, raw.questions)
+
+        const quiz = new Quiz(validatedQuiz.toJSON())
+        
+        const savedQuiz = await quiz.save()
+
+        return savedQuiz.toJSON()
     } catch (err){
-        console.error('Error in quiz.service.create\n', err)
-        return null
+        //console.error(err)
+        throw new Error('Error in quiz.service.create:', err.message)
     }
 }
 
 const remove = async (id) => {
     try{
-        return await Quiz.findByIdAndRemove(id)
+        return (await Quiz.findByIdAndRemove(id)).toJSON()
     } catch (err) {
-        console.error('Error in quiz.service.remove\n', err)
-        return null
+        // console.error(err)
+        throw new Error('Error in quiz.service.remove:', err.message)
     }
 }
 
-const update = async (id, newQuiz) => {
+const update = async (id, raw) => {
     try{
-        return await Quiz.findByIdAndUpdate(id, newQuiz, {new: true})
+        let updatedQuestions = raw.questions.map(q => new QuestionModel(q.text, q.answer))
+
+        const validatedQuiz = new QuizModel(raw.name, updatedQuestions)
+
+        return await Quiz.findByIdAndUpdate(id, validatedQuiz.toJSON(), {new: true})
     } catch(err){
-        console.error('Error in quiz.service.update\n', err)
-        return null
+        // console.error(err)
+        throw new Error('Error in quiz.service.update:', err.message)
     }
 }
 

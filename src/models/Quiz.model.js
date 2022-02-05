@@ -45,12 +45,19 @@ module.exports = class Quiz {
         if(questions.length === 0)
         throw new MissingValue('questions')
 
-        questions.forEach(q => {
-            if(!(q instanceof Question))
-            throw new Validation('questions')
-        })
+        const processedQuestions = questions.map(q => q instanceof Question ? q : new Question(q.text, q.answer))
+        // const processedQuestions = questions.map(q => {
+        //     if(q instanceof Question){
+        //         console.log('processedQuestion - quiz.model.js, q: ', q.toString())
+        //         return q
+        //     }
+            
+        //     console.log('Not a Question, q:', q)
+        //     return new Question(q.text, q.answer)
+        // })
 
-        this.#questions = questions
+
+        this.#questions = processedQuestions
     }
 
     toString(){
@@ -59,5 +66,13 @@ module.exports = class Quiz {
         this.questions.forEach(q => value.concat(`${q.toString()}\n`))
         
         return value
+    }
+
+    toJSON(){
+        const questionsJSON = this.questions.map(q => q.toJSON())
+        return {
+            name: this.name,
+            questions: questionsJSON
+        }
     }
 }

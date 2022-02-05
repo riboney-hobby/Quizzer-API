@@ -2,7 +2,7 @@ const Question = require('../../src/models/Question.model')
 const MissingValue = require('../../src/shared/errors/MissingValue.error')
 const Validation = require('../../src/shared/errors/Validation.error')
 
-test('Question is created with valid parameters', () => {
+test('Success: valid text and answer', () => {
     const text = 'There are 50 states in USA'
     const answer = true
     const question = new Question(text, answer)
@@ -10,25 +10,31 @@ test('Question is created with valid parameters', () => {
     expect(question.toString()).toBe(`Q: ${text}\nA: ${answer}`)
 })
 
-test('Missing text throws error', () => {
+test('Error: missing text and answer', () => {
+    const invalidQuestion = () => new Question()
+    
+    expect(invalidQuestion).toThrow(new MissingValue('text'))
+})
+
+test('Error: missing text', () => {
     const invalidText = () => new Question(false)
 
     expect(invalidText).toThrow(new MissingValue('text'))
 })
 
-test('Empty text throws error', () => {
+test('Error: empty text', () => {
     const invalidText = () => new Question('', false)
 
     expect(invalidText).toThrow(new MissingValue('text'))
 })
 
-test('Text with more than one space between words throws error', () => {
+test('Error: text with invalid # of spaces', () => {
     const invalidText = () => new Question('Sample  Text', false)
 
     expect(invalidText).toThrow(new Validation('text'))
 })
 
-test('Text with extra space around it is trimmed', () => {
+test('Success: text is trimmed', () => {
     const unTrimmedText = ' Sample Text '
     const answer = false
     const question = new Question(unTrimmedText, answer)
@@ -36,15 +42,29 @@ test('Text with extra space around it is trimmed', () => {
     expect(question.text).toBe(unTrimmedText.trim())
 })
 
-test('Missing answer throws error', () => {
+test('Error: missing answer', () => {
     const invalidAnswer = () => new Question('Sample Text')
     
     expect(invalidAnswer).toThrow(new MissingValue('answer'))
     
 })
 
-test('Invalid answer throws error', () => {
+test('Error: invalid answer', () => {
     const invalidAnswer = () => new Question('Sample Text', 'false')
     
     expect(invalidAnswer).toThrow(new Validation('answer'))  
+})
+
+test('Success: toJSON()', () => {
+    const text = 'There are 50 states in USA'
+    const answer = true
+    
+    const question = new Question(text, answer)
+
+    const expectedJSON = {
+        text: 'There are 50 states in USA',
+        answer: true
+    }
+
+    expect(question.toJSON()).toEqual(expectedJSON)
 })

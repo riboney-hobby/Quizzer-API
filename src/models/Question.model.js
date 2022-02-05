@@ -6,6 +6,7 @@ module.exports = class Question {
     #answer
 
     constructor(text, answer){
+        // if(!text && !answer) throw new MissingValue('text and answer')
         this.text = text
         this.answer = answer
     }
@@ -45,5 +46,12 @@ module.exports = class Question {
 
     toString(){
         return `Q: ${this.text}\nA: ${this.answer}`
+    }
+
+    toJSON(){
+        return {
+            text: this.text,
+            answer: this.answer
+        }
     }
 }

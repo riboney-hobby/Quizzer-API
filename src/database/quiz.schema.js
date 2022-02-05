@@ -1,5 +1,15 @@
 const mongoose = require('mongoose')
 // const QuizModel = require('../models/Quiz.model')
+// const quizSchema = new mongoose.Schema({
+//     name: String,
+//     question: [{
+//         text: String,
+//         answer: Boolean
+//       }],
+//   })
+// const quizSchema = new mongoose.Schema().loadClass(QuizModel)
+// quizSchema.loadClass(QuizModel)
+
 
 const quizSchema = new mongoose.Schema({
   name: {
@@ -18,21 +28,15 @@ const quizSchema = new mongoose.Schema({
     }],
 })
 
-// const quizSchema = new mongoose.Schema({
-//     name: String,
-//     question: [{
-//         text: String,
-//         answer: Boolean
-//       }],
-//   })
-// const quizSchema = new mongoose.Schema().loadClass(QuizModel)
-// quizSchema.loadClass(QuizModel)
-
 
 quizSchema.set('toJSON', {
     transform: (doc, obj) => {
         obj.id = obj._id.toString()
-        obj.questions.forEach( q => {delete q._id})
+        obj.questions.forEach( q => {
+            q.id = q._id.toString()
+            delete q._id
+            delete q.__v
+        })
         delete obj._id
         delete obj.__v
     }
