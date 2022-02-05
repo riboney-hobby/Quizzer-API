@@ -11,7 +11,6 @@ services:
       - quizzer-backend
     volumes:
       - ./:/home/app
-      - reserved:/home/app/node_modules
     depends_on:
       - mongo
   mongo:
@@ -30,4 +29,3 @@ networks:
 volumes:
   mongo-data:
       driver: local
-  reserved:
