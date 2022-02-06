@@ -1,23 +1,32 @@
 const express = require('express')
+const timeout = require('connect-timeout')
+require('express-async-errors')
 
-const quizRouter = require('./routers/quiz.router')
+const routes = require('./routers/app.router')
+const e = require('./middlewares/error.middleware')
+const m = require('./middlewares/misc.middleware')
+
 const logger = require('../shared/logger')
+
 
 const app = express()
 
+app.use(timeout(3000))
 app.use(express.json())
+app.use(m.httpTimeout)
 
-app.get('/', (req, res) => {
-    res.status(200).send('Hello World!')
-})
+app.use(routes)
 
-app.use('/api/quizzes', quizRouter)
+app.use(e.errorLogger)            // logs error message
+app.use(e.errorHandler)           // looks for known errors and handles accordingly 
+app.use(e.unknownErrorHandler)    // catch-all error handler
+
 
 // Promise > callback
 const connect = (port, hostname) => {
 
     const displayInfo = (addressInfo) => {
-        logger.error(`Server is running on ${hostname}`)
+        logger.info(`Server is running on ${hostname}`)
         let connectionInfo
         if(typeof addressInfo === 'object'){
             connectionInfo = `Connection:
