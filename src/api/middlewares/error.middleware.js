@@ -3,25 +3,19 @@ const logger = require('../../shared/logger')
 //https://scoutapm.com/blog/express-error-handling
 
 const errorLogger = (error, req, res, next) => {
-    logger.error(error)
+    logger.error(`${error}`)
     next(error)
 }
 
 const errorHandler = (error, req, res, next) => {
     if(error.type == "redirect") res.redirect('/')
     else if(error.type == "not-found") res.redirect('/404')
-    else if(error.timeout) {
-        logger.error(error)
-        return res.redirect('/timeout')
-    }
+    else if(error.timeout) res.redirect('/timeout')
     else next(error)
 }
 
 // eslint-disable-next-line no-unused-vars
-const unknownErrorHandler = (error, req, res, next) => {
-    logger.error(error)
-    res.redirect('/error')
-}
+const unknownErrorHandler = (error, req, res, next) => res.redirect('/error')
 
 module.exports = {
     errorLogger,
