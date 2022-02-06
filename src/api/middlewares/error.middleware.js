@@ -7,20 +7,15 @@ const errorLogger = (error, req, res, next) => {
     next(error)
 }
 
-const errorHandler = (error, req, res, next) => {
-    if(error.type == "redirect") res.redirect('/')
-    else if(error.type == "not-found") res.redirect('/404')
-    else if(error.timeout) res.redirect('/timeout')
-    else next(error)
-}
-
 // eslint-disable-next-line no-unused-vars
-const unknownErrorHandler = (error, req, res, next) => res.redirect('/error')
+const errorHandler = (error, req, res, next) => {
+    if(error.name === 'TimeoutError') res.status(503).json({message: `Request timed out`, error: error.message})
+    else res.status(503).json({message: `Could not process request`, error: error.message})
+}
 
 module.exports = {
     errorLogger,
-    errorHandler,
-    unknownErrorHandler
+    errorHandler
 }
 
 

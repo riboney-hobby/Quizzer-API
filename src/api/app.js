@@ -17,9 +17,8 @@ app.use(m.httpTimeout)
 
 app.use(routes)
 
-app.use(e.errorLogger)            // logs error message
-app.use(e.errorHandler)           // looks for known errors and handles accordingly 
-app.use(e.unknownErrorHandler)    // catch-all error handler
+app.use(e.errorLogger)
+app.use(e.errorHandler)
 
 
 // Promise > callback
