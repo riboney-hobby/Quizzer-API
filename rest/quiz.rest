@@ -1,0 +1,46 @@
+GET http://localhost:8000/api/quizzes
+
+
+###
+POST http://localhost:8000/api/quizzes
+Content-Type: application/json
+
+{
+    "name": "test quiz 1105",
+    "questions": [
+        {
+            "text": "question #1",
+            "answer": true
+        },
+        {
+            "text": "question #2",
+            "answer": false
+        },
+        {
+            "text": "question #3",
+            "answer": true
+        }
+    ]
+}
+
+###
+POST http://localhost:8000/api/quizzes
+Content-Type: application/json
+
+{
+    "name": "test quiz 1105",
+    "questions": [
+        {
+            "text": "question #1",
+            "answer": true
+        },
+        {
+            "text": "question #2",
+            "answer": false
+        },
+        {
+            "text": "question #3",
+            "answer": true
+        },
+    ]
+}
