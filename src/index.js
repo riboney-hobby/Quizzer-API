@@ -1,4 +1,4 @@
-const server = require('./app')
+const server = require('./api/app')
 const database = require('./database/mongoConnection')
 const configs = require('./shared/configs')
 const logger = require('./shared/logger')
