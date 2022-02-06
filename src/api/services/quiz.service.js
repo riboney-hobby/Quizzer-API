@@ -31,7 +31,8 @@ const retrieveAll = async () => {
 
 const retrieveByID = async (id) => {
     try {
-        return (await Quiz.findById(id)).toJSON()
+        const res = await Quiz.findById(id)
+        return res ? res.toJSON():null
     } catch(err){
         logger.error(err)
         throw new Error('Error in quiz.service.retrieveById:', err.message)
@@ -45,7 +46,7 @@ const create = async (raw) => {
         const quiz = new Quiz(validatedQuiz.toJSON())
         
         const savedQuiz = await quiz.save()
-
+        logger.debug(`${JSON.stringify(savedQuiz.toJSON())}`)
         return savedQuiz.toJSON()
     } catch (err){
         logger.error(err)

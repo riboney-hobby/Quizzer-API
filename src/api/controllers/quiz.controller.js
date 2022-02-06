@@ -22,7 +22,7 @@ const getById = async (req, res, next) => {
 
 const post = async (req, res, next) => {
     try{
-        logger.debug(`incoming data: \n ${req.body}`)
+        logger.debug(`incoming data: \n ${JSON.stringify(req.body)}`)
         res.json(await quizService.create(req.body))
     } catch(err){
         logger.error(`Error in quiz.controller.post: ${err.message}`)

@@ -1,12 +1,38 @@
 GET http://localhost:8000/api/quizzes
 
+###
+GET http://localhost:8000/api/quizzes/62002a929154f0a0c35001ce
+
+###
+PUT http://localhost:8000/api/quizzes/61fff8bfd84ac30df6faa7f2
+Content-Type: application/json
+
+{
+    "name": "test quiz 1",
+    "questions": [
+      {
+        "text": "question #1",
+        "answer": true
+      },
+      {
+        "text": "question #2",
+        "answer": false,
+        "id": "poop"
+      },
+      {
+        "text": "question #3",
+        "answer": true,
+        "id": "61fff8"
+      }
+    ]
+}
 
 ###
 POST http://localhost:8000/api/quizzes
 Content-Type: application/json
 
 {
-    "name": "test quiz 1105",
+    "name": "test quiz 4",
     "questions": [
         {
             "text": "question #1",
@@ -44,3 +70,6 @@ Content-Type: application/json
         },
     ]
 }
+
+###
+DELETE http://localhost:8000/api/quizzes/62002a929154f0a0c35001ce
