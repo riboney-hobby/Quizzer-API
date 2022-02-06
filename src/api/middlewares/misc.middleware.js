@@ -15,8 +15,18 @@ const httpTimeout = (req, res, next) => {
     }
 }
 
+const fourOhFour = (req, res) => 
+    res
+    .status(404)
+    .json(
+        {message: 'Resource not found', 
+        METHOD: `${req.method}`, 
+        PATH: `${req.path}`
+    })
+
 module.exports = {
-    httpTimeout
+    httpTimeout,
+    fourOhFour
 }
 
 

@@ -10,6 +10,8 @@ const errorLogger = (error, req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (error, req, res, next) => {
     if(error.name === 'TimeoutError') res.status(503).json({message: `Request timed out`, error: error.message})
+    else if(error.name === 'CastError') res.status(400).json({message: 'Invalid ID!', error: error.message}) // Typically thrown when cast to ObjectID fails
+    else if(error.name === 'ValidationError') return res.status(400).json({error: error.message}) // thrown from mongoose schema validation failure
     else res.status(503).json({message: `Could not process request`, error: error.message})
 }
 

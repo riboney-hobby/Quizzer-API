@@ -1,6 +1,5 @@
 const Quiz = require('../../database/quiz.schema')
 const QuizModel = require('../../models/Quiz.model')
-const QuestionModel = require('../../models/Question.model')
 const logger = require('../../shared/logger')
 
 // const retrieveAll = async () => {
@@ -24,8 +23,8 @@ const retrieveAll = async () => {
 
         return quizzes.map(q => q.toJSON())
     } catch(err){
-        logger.error(err)
-        throw new Error('Error in quiz.service.retrieveAll:', err.message)
+        logger.error(`${err}`)
+        throw err
     }
 }
 
@@ -34,8 +33,8 @@ const retrieveByID = async (id) => {
         const res = await Quiz.findById(id)
         return res ? res.toJSON():null
     } catch(err){
-        logger.error(err)
-        throw new Error('Error in quiz.service.retrieveById:', err.message)
+        logger.error(`${err}`)
+        throw err
     }
 }
 
@@ -49,30 +48,31 @@ const create = async (raw) => {
         logger.debug(`${JSON.stringify(savedQuiz.toJSON())}`)
         return savedQuiz.toJSON()
     } catch (err){
-        logger.error(err)
-        throw new Error('Error in quiz.service.create:', err.message)
+        logger.error(`${err}`)
+        throw err
     }
 }
 
 const remove = async (id) => {
     try{
-        return (await Quiz.findByIdAndRemove(id)).toJSON()
+        const res = await Quiz.findByIdAndRemove(id)
+        return res ? res.toJSON() : null
     } catch (err) {
-        logger.error(err)
-        throw new Error('Error in quiz.service.remove:', err.message)
+        logger.error(`${err}`)
+        throw err
     }
 }
 
 const update = async (id, raw) => {
     try{
-        let updatedQuestions = raw.questions.map(q => new QuestionModel(q.text, q.answer))
+        // let updatedQuestions = raw.questions.map(q => new QuestionModel(q.text, q.answer))
 
-        const validatedQuiz = new QuizModel(raw.name, updatedQuestions)
+        const validatedQuiz = new QuizModel(raw.name, raw.questions)
 
         return await Quiz.findByIdAndUpdate(id, validatedQuiz.toJSON(), {new: true})
     } catch(err){
-        logger.error(err)
-        throw new Error('Error in quiz.service.update:', err.message)
+        logger.error(`${err}`)
+        throw err
     }
 }
 

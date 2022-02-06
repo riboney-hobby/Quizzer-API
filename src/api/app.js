@@ -19,6 +19,8 @@ app.use(routes)
 
 app.use(e.errorLogger)
 app.use(e.errorHandler)
+// https://expressjs.com/en/starter/faq.html
+app.use(m.fourOhFour)
 
 
 // Promise > callback

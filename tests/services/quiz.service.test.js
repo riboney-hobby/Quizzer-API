@@ -64,7 +64,7 @@ describe('quiz.service.create', () => {
         const invalidQuiz = async () => {await quizService.create({name, questions})}
     
         // src: https://stackoverflow.com/questions/47144187/can-you-write-async-tests-that-expect-tothrow
-        await expect(invalidQuiz).rejects.toThrow('Error in quiz.service.create:')
+        await expect(invalidQuiz).rejects.toThrow()
     })
 
     test('Error: inserting questions with missing text', async () => {
@@ -77,7 +77,7 @@ describe('quiz.service.create', () => {
         const invalidQuiz = async () => {await quizService.create({name, questions})}
     
         // src: https://stackoverflow.com/questions/47144187/can-you-write-async-tests-that-expect-tothrow
-        await expect(invalidQuiz).rejects.toThrow('Error in quiz.service.create:')
+        await expect(invalidQuiz).rejects.toThrow()
     })
 
     test('Error: inserting questions with missing answer', async () => {
@@ -90,7 +90,7 @@ describe('quiz.service.create', () => {
         const invalidQuiz = async () => {await quizService.create({name, questions})}
     
         // src: https://stackoverflow.com/questions/47144187/can-you-write-async-tests-that-expect-tothrow
-        await expect(invalidQuiz).rejects.toThrow('Error in quiz.service.create:')
+        await expect(invalidQuiz).rejects.toThrow()
     })
 
     test('Error: inserting quiz with missing name', async () => {
@@ -101,7 +101,7 @@ describe('quiz.service.create', () => {
         const invalidQuiz = async () => {await quizService.create({questions})}
     
         // src: https://stackoverflow.com/questions/47144187/can-you-write-async-tests-that-expect-tothrow
-        await expect(invalidQuiz).rejects.toThrow('Error in quiz.service.create:')
+        await expect(invalidQuiz).rejects.toThrow()
     })
 })
 
@@ -128,7 +128,7 @@ describe('quiz.service.retrieve*', () => {
 
     test('Error: retrieve quiz by invalid id', async () => {
         const invalidId = async () => await quizService.retrieveByID('0')
-        await expect(invalidId()).rejects.toThrow('Error in quiz.service.retrieveById')
+        await expect(invalidId()).rejects.toThrow()
     })
 
     test('Success: retrieve null when database is empty', async () => {
@@ -160,7 +160,7 @@ describe('quiz.service.remove', () => {
     test('Error: remove quiz by invalid id', async () => {
         const invalidId = async () => await quizService.remove('0')
 
-        await expect(invalidId()).rejects.toThrow('Error in quiz.service.remove')
+        await expect(invalidId()).rejects.toThrow()
     })
 })
 
@@ -205,7 +205,7 @@ describe('quiz.service.update', () => {
 
         const invalidName = async () => await quizService.update(quizId, newQuizJSON)
 
-        await expect(invalidName()).rejects.toThrow('Error in quiz.service.update')
+        await expect(invalidName()).rejects.toThrow()
     })
 
     test('Error: missing questions', async () => {
@@ -215,7 +215,7 @@ describe('quiz.service.update', () => {
 
         const invalidQuestions = async () => await quizService.update(quizId, newQuizJSON)
 
-        await expect(invalidQuestions()).rejects.toThrow('Error in quiz.service.update')
+        await expect(invalidQuestions()).rejects.toThrow()
     })
 })
 
