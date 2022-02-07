@@ -33,7 +33,10 @@ const post = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
     try{
-        res.json(await quizService.remove(req.params.id))
+        const result = await quizService.remove(req.params.id)
+        
+         return result ? res.status(204).json(result) : res.status(404).end()
+        
     } catch(err){
         logger.error(`Error in quiz.controller.remove:', ${err.message}`)
         next(err)

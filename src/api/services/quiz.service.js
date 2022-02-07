@@ -55,8 +55,7 @@ const create = async (raw) => {
 
 const remove = async (id) => {
     try{
-        const res = await Quiz.findByIdAndRemove(id)
-        return res ? res.toJSON() : null
+       return await Quiz.findByIdAndRemove(id)
     } catch (err) {
         logger.error(`${err}`)
         throw err
@@ -69,7 +68,7 @@ const update = async (id, raw) => {
 
         const validatedQuiz = new QuizModel(raw.name, raw.questions)
 
-        return await Quiz.findByIdAndUpdate(id, validatedQuiz.toJSON(), {new: true})
+        return (await Quiz.findByIdAndUpdate(id, validatedQuiz.toJSON(), {new: true})).toJSON()
     } catch(err){
         logger.error(`${err}`)
         throw err
