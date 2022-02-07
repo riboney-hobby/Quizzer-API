@@ -1,18 +1,33 @@
 const express = require('express')
+const timeout = require('connect-timeout')
+require('express-async-errors')
 
-const logger = require('./logger')
+const routes = require('./routers/app.router')
+const e = require('./middlewares/error.middleware')
+const m = require('./middlewares/misc.middleware')
+
+const logger = require('../shared/logger')
+
 
 const app = express()
 
-app.get('/', (req, res) => {
-    res.status(200).send('Hello World!')
-})
+app.use(timeout(3000))
+app.use(express.json())
+app.use(m.httpTimeout)
+
+app.use(routes)
+
+app.use(e.errorLogger)
+app.use(e.errorHandler)
+// https://expressjs.com/en/starter/faq.html
+app.use(m.fourOhFour)
+
 
 // Promise > callback
 const connect = (port, hostname) => {
 
     const displayInfo = (addressInfo) => {
-        logger.error(`Server is running on ${hostname}`)
+        logger.info(`Server is running on ${hostname}`)
         let connectionInfo
         if(typeof addressInfo === 'object'){
             connectionInfo = `Connection:

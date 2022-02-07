@@ -1,4 +1,6 @@
 module.exports = {
     testEnvironment: 'node',
-    setupFilesAfterEnv: ['./jest.setup.js']
+    globalSetup: './tests/shared/globalSetup.js',
+    globalTeardown: './tests/shared/globalTeardown.js',
+    setupFilesAfterEnv: ['./jest.setup.js'],
 }

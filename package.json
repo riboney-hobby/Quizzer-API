@@ -32,9 +32,11 @@
   "homepage": "https://github.com/riboney/Quizzer-Fullstack#readme",
   "dependencies": {
     "axios": "^0.25.0",
+    "connect-timeout": "^1.9.0",
     "cors": "^2.8.5",
     "dotenv": "^15.0.0",
     "express": "^4.17.2",
+    "express-async-errors": "^3.1.1",
     "mongoose": "^6.1.9",
     "morgan": "^1.10.0",
     "winston": "^3.5.1"
@@ -45,6 +47,7 @@
     "husky": "^7.0.0",
     "jest": "^27.4.7",
     "lint-staged": "^12.3.2",
+    "mongodb-memory-server": "^8.2.0",
     "prettier": "^2.5.1",
     "supertest": "^6.2.2"
   }
