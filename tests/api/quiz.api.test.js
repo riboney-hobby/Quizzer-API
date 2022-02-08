@@ -1,11 +1,11 @@
 const supertest = require('supertest')
-const server = require('../../src/api/app')
+const app = require('../../src/api/app')
 const Quiz = require('../../src/database/quiz.schema')
 const quizService = require('../../src/api/services/quiz.service')
 const db = require('../database/localMongoConnection')
 const s = require('../database/seederTest')
 
-const API = supertest(server.app)
+const API = supertest(app)
 const quizRoute = '/api/quizzes'
 
 // https://dev.to/paulasantamaria/testing-node-js-mongoose-with-an-in-memory-database-32np

@@ -1,6 +1,6 @@
 const { MongoMemoryServer } = require('mongodb-memory-server')
 
-const server = require('./api/app')
+const server = require('./api/server')
 const database = require('./database/mongoConnection')
 const configs = require('./shared/configs')
 const logger = require('./shared/logger')
