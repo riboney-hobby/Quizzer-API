@@ -4,6 +4,7 @@
   "description": "Web application for quizzes",
   "main": "./src/index.js",
   "scripts": {
+    "local": "NODE_ENV=LOCAL node ./src/index.js",
     "dev": "NODE_ENV=DEV node ./src/index.js",
     "test": "NODE_ENV=TEST jest --verbose --runInBand",
     "format:check": "prettier --check .",

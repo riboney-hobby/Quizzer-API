@@ -106,6 +106,9 @@ const transports = (() => {
         case 'DEV':
             return devEnvTransports
         
+        case 'LOCAL':
+            return devEnvTransports
+        
         case 'PROD':
             return prodEnvTransports
 
