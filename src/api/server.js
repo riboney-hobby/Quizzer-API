@@ -1,5 +1,5 @@
 const logger = require('../shared/logger')
-const {app} = require('./app')
+const app = require('./app')
 
 const connect = (port, hostname) => {
 

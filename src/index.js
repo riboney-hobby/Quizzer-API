@@ -22,6 +22,7 @@ const startApp = async (env) => {
         if(env === 'LOCAL'){
             mongod = await MongoMemoryServer.create()
             URI = mongod.getUri()
+            logger.debug(`URI: ${URI}`)
         } else 
             URI = configs.MONGO_URI
 
@@ -33,7 +34,7 @@ const startApp = async (env) => {
         httpServer = connections[0]
     } catch (err){
         logger.error(`Error in starting application!`)
-        logger.error(err)
+        logger.error(`${err}`)
         process.exit(1)
     }
 }
