@@ -1,7 +1,7 @@
 const supertest = require('supertest')
-const server = require('../src/api/app')
+const app = require('../src/api/app')
 
-const API = supertest(server.app)
+const API = supertest(app)
 
 describe('General application tests', () => {
     test('GET request to Root path works', async () => {

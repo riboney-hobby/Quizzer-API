@@ -67,7 +67,7 @@ Content-Type: application/json
         {
             "text": "question #3",
             "answer": true
-        },
+        }
     ]
 }
 

@@ -1,7 +1,10 @@
-const server = require('./api/app')
+const { MongoMemoryServer } = require('mongodb-memory-server')
+
+const server = require('./api/server')
 const database = require('./database/mongoConnection')
 const configs = require('./shared/configs')
 const logger = require('./shared/logger')
+
 
 // const server = http.createServer(app)
 
@@ -10,18 +13,28 @@ const logger = require('./shared/logger')
 // })
 
 let httpServer
+let mongod
 
-const startApp = async () => {
+const startApp = async (env) => {
     try {
+        let URI
+
+        if(env === 'LOCAL'){
+            mongod = await MongoMemoryServer.create()
+            URI = mongod.getUri()
+            logger.debug(`URI: ${URI}`)
+        } else 
+            URI = configs.MONGO_URI
+
         const connections = await Promise.all([
             server.connect(configs.PORT, configs.HOSTNAME),
-            database.connect(configs.MONGO_URI)
+            database.connect(URI)
         ])
 
         httpServer = connections[0]
     } catch (err){
         logger.error(`Error in starting application!`)
-        logger.error(err)
+        logger.error(`${err}`)
         process.exit(1)
     }
 }
@@ -29,13 +42,18 @@ const startApp = async () => {
 // mongoose.connection.once('open', () => resolve(`Connection to database ${mongoose.connection.name} established!`))
 //mongoose.connection.once('error', () => reject(`Error connecting to database ${mongoose.connection.name}...`))
 
-const shutdownApp = async (httpServer) => {
+const shutdownApp = async (httpServer, env) => {
+
     try{
         logger.log("Shutting down application!")
+        const stopInMemoryMongo = env === 'LOCAL' ? mongod.stop(): undefined
+
         await Promise.all([
             server.disconnect(httpServer),
-            database.disconnect()
+            database.disconnect(),
+            stopInMemoryMongo()
         ])
+
         process.exit(0)
     } catch(err){
         if(err){
@@ -46,6 +64,6 @@ const shutdownApp = async (httpServer) => {
     }
 }
 
-startApp()
+startApp(configs.ENV)
 database.connectionStatus()
-process.on('SIGINT', () => shutdownApp(httpServer))
+process.on('SIGINT', async () => await shutdownApp(httpServer, configs.ENV))
