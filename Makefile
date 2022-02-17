@@ -1,5 +1,8 @@
-docker-dev-build:
+build:
 	docker-compose -f docker-compose-dev.yml build
 
-docker-dev-run:
+start:
 	docker-compose -f docker-compose-dev.yml up
+
+shutdown:
+	docker-compose -f docker-compose-dev.yml down

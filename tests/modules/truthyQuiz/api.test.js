@@ -1,12 +1,11 @@
 const supertest = require('supertest')
-const app = require('../../src/api/app')
-const Quiz = require('../../src/database/quiz.schema')
-const quizService = require('../../src/api/services/quiz.service')
-const db = require('../database/localMongoConnection')
-const s = require('../database/seederTest')
+const app = require('../../../src/api/app')
+const {quizDoc, quizService} = require('../../../src/modules/truthyQuiz')
+const db = require('../../database/localMongoConnection')
+const s = require('../../shared/sampleData')
 
 const API = supertest(app)
-const quizRoute = '/api/quizzes'
+const quizEndpoint = '/api/quizzes'
 
 // https://dev.to/paulasantamaria/testing-node-js-mongoose-with-an-in-memory-database-32np
 beforeAll(async () => {
@@ -15,21 +14,21 @@ beforeAll(async () => {
 
 describe('Quiz - POST', () => {
     beforeAll( async() => {
-        await Quiz.deleteMany({})
+        await quizDoc.deleteMany({})
     })
 
     test('Success: valid POST request', async () => {
         await API
-        .post(quizRoute)
-        .send(s.sampleQuizzes[0])
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
+            .post(quizEndpoint)
+            .send(s.singleTruthyQuizJSON)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
     })
 
     test('Success: valid POST request -- quiz properties are defined', async () => {
         const res = await API
-        .post(quizRoute)
-        .send(s.sampleQuizzes[1])
+            .post(quizEndpoint)
+            .send(s.singleTruthyQuizJSON)
 
         expect(res.body.id).toBeTruthy()
         expect(res.body.name).toBeTruthy()
@@ -38,16 +37,16 @@ describe('Quiz - POST', () => {
 
     test('Error: invalid POST request -- missing questions', async () => {
         await API
-        .post(quizRoute)
-        .send({name:'test'})
-        .expect(400)
+            .post(quizEndpoint)
+            .send({name:'test'})
+            .expect(400)
     })
 
     test('Error: invalid POST request -- missing name', async () => {
         await API
-        .post(quizRoute)
-        .send({questions: s.sampleQuestionModels})
-        .expect(400)
+            .post(quizEndpoint)
+            .send({questions: s.quizQuestions})
+            .expect(400)
     })
 })
 
@@ -55,27 +54,27 @@ describe('Quiz - GET', () => {
     let quizIds = []
 
     beforeAll( async() => {
-        await Quiz.deleteMany({})
-        for(let i = 0; i<s.sampleQuizzes.length; i++){
-            const quiz = await quizService.create(s.sampleQuizzes[i])
+        await quizDoc.deleteMany({})
+        for(let i = 0; i<s.manyTruthyQuizJSON.length; i++){
+            const quiz = await quizService.create(s.manyTruthyQuizJSON[i])
             quizIds.push(quiz.id)
         }
     })
 
     test('Success: retrieve all quizzes', async() => {
         await API
-        .get(quizRoute)
-        .expect(200)
+            .get(quizEndpoint)
+            .expect(200)
     })
 
     test('Success: retrieve all quizzes - expected number of entities returned', async() => {
-        const res = await API.get(quizRoute)
+        const res = await API.get(quizEndpoint)
 
-        expect(res.body).toHaveLength(s.sampleQuizzes.length)
+        expect(res.body).toHaveLength(s.manyTruthyQuizJSON.length)
     })
 
     test('Success: retrieve all quizzes - returned quiz entities are valid', async() => {
-        const res = await API.get(quizRoute)
+        const res = await API.get(quizEndpoint)
 
         res.body.forEach( q => {
             expect(q.id).toBeTruthy()
@@ -86,45 +85,52 @@ describe('Quiz - GET', () => {
 
     test('Success: retrieve quiz by id', async () => {
         await API
-        .get(`${quizRoute}/${quizIds[0]}`)
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
+            .get(`${quizEndpoint}/${quizIds[0]}`)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
     })
 
-    test('Error: retrieve quiz by invalid id', async () => {
+    test('Error: retrieve quiz by invalid object id', async () => {
         await API
-        .get(`${quizRoute}/test`)
-        .expect(400)
+            .get(`${quizEndpoint}/test`)
+            .expect(400)
     })
+
+    // TODO: Add tests to verify API returns 404
+    // test('Error: retrieve quiz by non-existent object id', async () => {
+    //     await API
+    //     .get(`${quizEndpoint}/${}`)
+    //     .expect(400)
+    // })
 })
 
 describe('Quiz - DELETE', () => {
     let quizIds = []
 
     beforeAll(async () => {
-        await Quiz.deleteMany({})
-        for(let i = 0; i<s.sampleQuizzes.length; i++){
-            const quiz = await quizService.create(s.sampleQuizzes[i])
+        await quizDoc.deleteMany({})
+        for(let i = 0; i<s.manyTruthyQuizJSON.length; i++){
+            const quiz = await quizService.create(s.manyTruthyQuizJSON[i])
             quizIds.push(quiz.id)
         }
     })
 
     test('Success: Quiz is removed', async () => {
         await API
-        .delete(`${quizRoute}/${quizIds[0]}`)
-        .expect(204)
+            .delete(`${quizEndpoint}/${quizIds[0]}`)
+            .expect(204)
     })
 
     test('Error: Invalid id', async () => {
         await API
-        .delete(`${quizRoute}/${quizIds[0]}`)
-        .expect(404)
+            .delete(`${quizEndpoint}/${quizIds[0]}`)
+            .expect(404)
     })
 
     test('Error: Invalid id - Object with ID already removed', async () => {
         await API
-        .delete(`${quizRoute}/${quizIds[0]}`)
-        .expect(404)
+            .delete(`${quizEndpoint}/${quizIds[0]}`)
+            .expect(404)
     })
 })
 
@@ -132,9 +138,9 @@ describe('Quiz - PUT', () => {
     let quizIds = []
 
     beforeAll(async () => {
-        await Quiz.deleteMany({})
-        for(let i = 0; i<s.sampleQuizzes.length; i++){
-            const quiz = await quizService.create(s.sampleQuizzes[i])
+        await quizDoc.deleteMany({})
+        for(let i = 0; i<s.manyTruthyQuizJSON.length; i++){
+            const quiz = await quizService.create(s.manyTruthyQuizJSON[i])
             quizIds.push(quiz.id)
         }
     })
@@ -151,17 +157,17 @@ describe('Quiz - PUT', () => {
         }
 
         const res = await API
-        .put(`${quizRoute}/${quizIds[0]}`)
-        .send(newQuizJSON)
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
+            .put(`${quizEndpoint}/${quizIds[0]}`)
+            .send(newQuizJSON)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
 
         expect(res.body.id).toBe(quizIds[0])
     })
 
     test('ERROR: Invalid Parameters', async () => {
         await API
-            .put(`${quizRoute}/${quizIds[0]}`)
+            .put(`${quizEndpoint}/${quizIds[0]}`)
             .send(null)
             .expect(400)
     })
@@ -177,7 +183,7 @@ describe('Quiz - PUT', () => {
         }
 
         await API
-            .put(`${quizRoute}/${quizIds[0]}`)
+            .put(`${quizEndpoint}/${quizIds[0]}`)
             .send(newQuizJSON)
             .expect(400)
     })
@@ -188,7 +194,7 @@ describe('Quiz - PUT', () => {
         }
 
         await API
-            .put(`${quizRoute}/${quizIds[0]}`)
+            .put(`${quizEndpoint}/${quizIds[0]}`)
             .send(newQuizJSON)
             .expect(400)
     })
@@ -200,7 +206,7 @@ describe('Quiz - PUT', () => {
         }
 
         await API
-            .put(`${quizRoute}/${quizIds[0]}`)
+            .put(`${quizEndpoint}/${quizIds[0]}`)
             .send(newQuizJSON)
             .expect(400)
     })

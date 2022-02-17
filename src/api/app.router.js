@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const quizRouter = require('./quiz.router')
+const {quizRouter} = require('../modules/truthyQuiz')
 
 router.get('/', (req, res) => res.status(200).send('Hello World!'))
 

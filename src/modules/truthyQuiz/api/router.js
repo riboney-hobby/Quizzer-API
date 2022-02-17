@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const quizController = require('../controllers/quiz.controller')
+const quizController = require('./controller')
 
 router.get('/', quizController.getAll)
 router.get('/:id', quizController.getById)
