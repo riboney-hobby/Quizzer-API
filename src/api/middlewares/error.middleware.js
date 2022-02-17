@@ -1,4 +1,5 @@
 const logger = require('../../shared/logger')
+const ValidationError = require('../../shared/errors/Validation.error')
 
 //https://scoutapm.com/blog/express-error-handling
 
@@ -11,8 +12,9 @@ const errorLogger = (error, req, res, next) => {
 const errorHandler = (error, req, res, next) => {
     if(error.name === 'TimeoutError') res.status(503).json({message: `Request timed out`, error: error.message})
     else if(error.name === 'CastError') res.status(400).json({message: 'Invalid ID!', error: error.message}) // Typically thrown when cast to ObjectID fails
-    else if(error.name === 'ValidationError') return res.status(400).json({error: error.message}) // thrown from mongoose schema validation failure
-    else if(error.name === 'MissingValueError') return res.status(400).json({error: error.message})
+    else if(error instanceof ValidationError) res.status(400).json({error: error.name}) // thrown from mongoose schema validation failure
+    // https://expressjs.com/en/starter/faq.html
+    else if(error.message.includes('Resource not found')) res.status(404).json({message: 'Resource not found', METHOD: `${req.method}`, PATH: `${req.path}`})
     else res.status(503).json({message: `Could not process request`, error: error.message})
 }
 

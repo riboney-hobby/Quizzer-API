@@ -4,22 +4,19 @@ const app = require('./app')
 const connect = (port, hostname) => {
 
     const displayInfo = (addressInfo) => {
-        logger.info(`Server is running on ${hostname}`)
-        let connectionInfo
+        logger.info(`Server is running on ${hostname}`);
+        let connectionInfo;
         if(typeof addressInfo === 'object'){
-            connectionInfo = `Connection:
-            - Address: ${addressInfo.address}
-            - Protocol: ${addressInfo.family}
-            - Port: ${addressInfo.port}`
-
-            logger.info(connectionInfo)
+            connectionInfo = `Port: ${addressInfo.port}`;
+			
+            logger.info(connectionInfo);
         }
     }
 
     const serverCallback = (resolve, reject) => {
         const http = app.listen(port, () => displayInfo(http.address()))
-        .on('listening', () => resolve(http))
-        .on('error', err => reject(err))
+            .on('listening', () => resolve(http))
+            .on('error', err => reject(err))
     }
 
     return new Promise((resolve, reject) => serverCallback(resolve, reject))

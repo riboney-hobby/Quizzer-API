@@ -12,6 +12,8 @@
       "es6": true
     },
     "rules": {
-      "no-console": "warn"
+      "no-console": "warn",
+      "indent": ["error", 4],
+      "linebreak-style": ["error", "unix"]
     }
 }
